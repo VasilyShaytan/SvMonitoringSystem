@@ -1,0 +1,8 @@
+﻿@model IEnumerable<SvMonitoringSystem.Models.Route>
+
+<select id="routeCoordinate" name="RouteCoordinate" multiple="multiple">
+    @foreach (var item in Model)
+    {
+        <option value="@item.RouteId">@item.CoordinateLatitude - @item.CoordinateLongitude</option>
+    }
+</select>

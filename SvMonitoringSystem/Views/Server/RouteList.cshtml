@@ -1,0 +1,61 @@
+﻿@{
+    ViewData["Title"] = "Flight Report Page";
+    Layout = "_Server";
+}
+
+<h4>Выберите Группу ТС</h4>
+@Html.DropDownList("VehicleGroup", ViewBag.VehicleGroups as SelectList, new { id = "vehicleGroup" })
+<h4>Выберите ТС</h4>
+@Html.DropDownList("Vehicle", ViewBag.Vehicles as SelectList, new { id = "vehicle", multiple = "multiple" })
+<br />
+<select id="routeCoordinate" name="RouteCoordinate" multiple=""></select>
+
+@section scripts{
+    <script type="text/javascript">
+        $(function() {
+            $('#vehicleGroup').change(function () {
+                // получаем выбранный id
+                var id = $(this).val();
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("GetItems", "Server")/' + id,
+                    success: function(data) {
+                        // заменяем содержимое присланным частичным представлением
+                        $('#vehicle').replaceWith(data);
+                    }
+                });
+            });
+        });
+
+    </script>
+    <script>
+        $('#vehicle').select(function () {
+            var id = $(this).val();
+            alert(id);
+        });
+        function getRoute() {
+            var veh = document.getElementById("vehicle");
+            var id = veh.options[veh.selectedIndex].value;
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetCoordinates", "Server")/' + id,
+                success: function(data) {
+                    // заменяем содержимое присланным частичным представлением
+                    $('#routeCoordinate').replaceWith(data);
+                }
+            });
+            var routeCoordinates = [
+                {lat: 60.772, lng: 30.214},
+                {lat: 61.291, lng: 37.821},
+                {lat: 62.142, lng: 38.431},
+                {lat: 63.467, lng: 33.027}
+            ];
+            routeCoordinates.push({ lat: 66, lng: 33});
+            buildRoute(routeCoordinates);
+
+        }
+    </script>
+}
+<button onclick="getRoute();" id="reportView" class="btn btn-default">
+    Показать
+</button>

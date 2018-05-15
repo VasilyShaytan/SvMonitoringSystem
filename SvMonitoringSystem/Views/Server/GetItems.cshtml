@@ -1,0 +1,8 @@
+﻿@model IEnumerable<SvMonitoringSystem.Models.Vehicle>
+
+<select id="vehicle" name="Vehicle" multiple="multiple">
+    @foreach (var item in Model)
+    {
+        <option value="@item.VehicleId">@item.Mark</option>
+    }
+</select>

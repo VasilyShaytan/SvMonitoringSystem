@@ -1,0 +1,68 @@
+﻿@*@model SvMonitoringSystem.ViewModels.VehicleGroupViewModel*@
+@{
+    ViewData["Title"] = "Server Page";
+    Layout = "_Server";
+}
+
+<h3>Выберите Группу ТС</h3>
+@Html.DropDownList("VehicleGroup", ViewBag.VehicleGroups as SelectList, new { id = "vehicleGroup" })
+<h3>Выберите ТС</h3>
+@Html.DropDownList("Vehicle", ViewBag.Vehicles as SelectList, new { id = "vehicle", multiple = "multiple" })
+<div></div>
+<br />
+<select id="routeCoordinate" name="RouteCoordinate" multiple=""></select>
+
+
+@section scripts{
+    <script type="text/javascript">
+        $(function() {
+            $('#vehicleGroup').change(function () {
+
+                // получаем выбранный id
+                var id = $(this).val();
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("GetItems", "Server")/' + id,
+                    success: function(data) {
+                        // заменяем содержимое присланным частичным представлением
+                        $('#vehicle').replaceWith(data);
+                    }
+                });
+            });
+        });
+        $('#vehicle').change(function () {
+            var id = $(this).val();
+            //alert(id);
+        });
+    </script>
+}
+
+<script>
+    $('#vehicle').select(function () {
+        var id = $(this).val();
+        alert(id);
+    });
+    function ww() {
+        var veh = document.getElementById("vehicle");
+        var id = veh.options[veh.selectedIndex].value;
+        alert(id);
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("GetCoordinates", "Server")/' + id,
+            success: function(data) {
+                // заменяем содержимое присланным частичным представлением
+                var msg = "@(ViewBag.Coordinate.CoordinateLatitude)";
+                alert(msg);
+                $('#routeCoordinate').replaceWith(data);
+            }
+        });
+        
+
+    }
+</script>
+
+<button onclick="ww();" id="reportView" class="btn btn-default">
+    Показать
+</button>
+
+
