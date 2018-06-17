@@ -1,0 +1,163 @@
+﻿@model IEnumerable<SvMonitoringSystem.ViewModels.BasicParameterToParameterView>
+@{
+    ViewData["Title"] = "Fuel Report Page";
+    Layout = "_Server";
+}
+
+<h3 style="position:absolute; top:60px; left:150px;">Отчет по топливу</h3>
+<div style="position:absolute; top:120px; left:20px; width:500px; height:350px;  outline: 1px solid #000;">
+    <div style="margin: 5%;">
+        <h4>&nbsp; Выберите Группу ТС:</h4>
+        @Html.DropDownList("VehicleGroup", ViewBag.VehicleGroups as SelectList, new { id = "vehicleGroup", @class = "form-control" })
+        <br />
+        <h4>&nbsp; Выберите ТС:</h4>
+        @Html.DropDownList("Vehicle", ViewBag.Vehicles as SelectList, new { id = "vehicle", multiple = "multiple", @class = "form-control" })
+        <br />
+        <br />
+        <button onclick="checkList();" id="reportView" class="btn btn-default">
+            Показать отчет
+        </button>
+    </div>
+</div>
+<div style="position:absolute; top:500px; left:20px; width:500px; height:300px;  outline: 1px solid #000;">
+    <div style="margin: 5%;">
+        <table id="reportTableFuel" class="table" name="ReportTableFuel" width="400">
+            <thead>
+                <tr>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.SpnNameRu)*@
+                        Имя параметра
+                    </th>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.BasicParameterValue)*@
+                        Значение
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>
+                        Имя ТС
+                    </th>
+                    <th>
+                        KAMAZ 5490
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        Средняя скорость (км/ч)
+                    </th>
+                    <th>
+                        58,45
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        Расход дизтоплива абс./сред. на 100 км (л)
+                    </th>
+                    <th>
+                        45 / 17,9
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        Уровень дизтоплива (л)
+                    </th>
+                    <th>
+                        76
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        Давление газа (кПа)
+                    </th>
+                    <th>
+                        5,6
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        Расход газа абс./сред. на 100 км (л)
+                    </th>
+                    <th>
+                        11 / 3,9
+                    </th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@*<div>
+    <table id="reportTableFuel" name="ReportTableFuel" width="400">
+        <tr>
+            <td>
+                ID
+            </td>
+        </tr>
+        <tbody>
+
+        </tbody>
+    </table>
+</div>*@
+
+
+@section scripts{
+    <script type="text/javascript">
+        $(function() {
+            $('#vehicleGroup').change(function () {
+                // получаем выбранный id
+                var id = $(this).val();
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("GetItems", "Server")/' + id,
+                    success: function(data) {
+                        // заменяем содержимое присланным частичным представлением
+                        //$('#vehicle').replaceWith(data);
+                        $('#vehicle').empty();
+                        if (typeof data == "object") {
+                            $.each(data, function (i, item) {
+                                $('#vehicle').append($('<option>', {
+                                    value: item.vehicleId,
+                                    text: item.mark + ' ' + item.modelType
+                                }));
+                            });
+                        }
+                        
+                    }
+                });
+            });
+        });
+
+    </script>
+    <script>
+        $('#vehicle').select(function () {
+            var id = $(this).val();
+            alert(id);
+        });
+        function checkList() {
+            var veh = document.getElementById("vehicle");
+            var id = veh.options[veh.selectedIndex].value;
+            alert(id);
+            $.ajax({
+                type: 'GET',
+                @*url: '@Url.Action("GetItems", "Server")/' + id,*@
+                url: '@Url.Action("GetFuel", "Server")/'+id,
+                success: function(data) {
+                    // заменяем содержимое присланным частичным представлением
+                    //$('#reportTableFuel').replaceWith(data);
+                    //$('#reportTableFuel').empty();
+                    if (typeof data == "object") {
+                        $.each(data, function (key, item) {
+                            $('#reportTableFuel tbody').append('<tr><td>' + item.spnNameRu + '</td>' + '<td>' + item.basicParameterValue + '</td></tr>')
+                        })
+                    }
+                    else
+                    {
+                        alert("data не object");
+                    }
+                }
+            });
+        }
+    </script>
+}

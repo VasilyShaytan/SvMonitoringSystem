@@ -1,10 +1,10 @@
 ﻿@{
-    ViewData["Title"] = "Flight Report Page";
-    Layout = "_Server";
+    ViewData["Title"] = "Advanced Diagnostic Parameter Page";
+    Layout = "_Default";
 }
 
-<h3 style="position:absolute; top:60px; left:150px;">Маршрутный лист</h3>
-<div style="position:absolute; top:120px; left:20px; width:500px; height:500px;  outline: 1px solid #000;">
+<h3 style="position:absolute; top:60px; left:150px;">Параметры расширенной диагностики</h3>
+<div style="position:absolute; top:120px; left:20px; width:500px; height:350px;  outline: 1px solid #000;">
     <div style="margin: 5%;">
         <h4>&nbsp; Выберите Группу ТС:</h4>
         @Html.DropDownList("VehicleGroup", ViewBag.VehicleGroups as SelectList, new { id = "vehicleGroup", @class = "form-control" })
@@ -12,83 +12,89 @@
         <h4>&nbsp; Выберите ТС:</h4>
         @Html.DropDownList("Vehicle", ViewBag.Vehicles as SelectList, new { id = "vehicle", multiple = "multiple", @class = "form-control" })
         <br />
-        <br />
-        <div class="form-group row">
-            <label for="example-datetime-local-input" class="col-2 col-form-label">От</label>
-            <div class="col-10">
-                <input class="form-control" type="datetime-local" value="2017-08-19T13:45:00" id="example-datetime-local-input">
+        @*<div class="form-group row">
+                <label for="example-datetime-local-input" class="col-2 col-form-label">От</label>
+                <div class="col-10">
+                    <input class="form-control" type="datetime-local" value="2017-08-19T13:45:00" id="example-datetime-local-input">
+                </div>
             </div>
-        </div>
-        <div class="form-group row">
-            <label for="example-datetime-local-input" class="col-2 col-form-label">До</label>
-            <div class="col-10">
-                <input class="form-control" type="datetime-local" value="2017-08-19T13:45:00" id="example-datetime-local-input">
-            </div>
-        </div>
+            <div class="form-group row">
+                <label for="example-datetime-local-input" class="col-2 col-form-label">До</label>
+                <div class="col-10">
+                    <input class="form-control" type="datetime-local" value="2017-08-19T13:45:00" id="example-datetime-local-input">
+                </div>
+            </div>*@
         <br />
-        <button onclick="getRoute();" id="reportView" class="btn btn-default">
-            Показать трассу
+        <button onclick="showFlightReport();" id="reportFlightView" class="btn btn-default">
+            Показать отчет
         </button>
     </div>
 </div>
-@*<div style="position:absolute; top:500px; left:20px; width:500px; height:300px;  outline: 1px solid #000;">
+<div style="position:absolute; top:500px; left:20px; width:700px; height:300px;  outline: 1px solid #000;">
     <div style="margin: 5%;">
-        <table id="vehicleTable" class="table" name="VehiceTable" width="400">
+        <table id="reportTableFlight" class="table" name="ReportTableFuel" width="400">
             <thead>
                 <tr>
                     <th>
                         <em>Имя параметра</em>
                     </th>
                     <th>
-                        <em>Значение</em>
+                        <em>Текущее значение</em>
+                    </th>
+                    <th>
+                        <em>Рекомендуемый номинал</em>
                     </th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <th>
-                        Имя ТС
+                        Давление в шинах (атм)
                     </th>
                     <th>
-                        VOLVO FH400
-                    </th>
-                </tr>
-                <tr>
-                    <th>
-                        Текущая скорость (км/ч)
+                        6,1
                     </th>
                     <th>
-                        69,33
+                        5,5
                     </th>
                 </tr>
                 <tr>
                     <th>
-                        Объем топлива в баке (л)
+                        Температура масла в двигателе (&#8451;)
                     </th>
                     <th>
-                        46,1
+                        124
+                    </th>
+                    <th>
+                        110 - 140
                     </th>
                 </tr>
                 <tr>
                     <th>
-                        Обороты двигателя (об/мин)
+                        Температура охлаждающей жидкости (&#8451;)
                     </th>
                     <th>
-                        3100
+                        91
+                    </th>
+                    <th>
+                        85 - 95
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        Вес автопоезда (т)
+                    </th>
+                    <th>
+                        8,3
+                    </th>
+                    <th>
+                        8 - 10
                     </th>
                 </tr>
             </tbody>
         </table>
     </div>
-</div>*@
-
-
-@*<h4>Выберите Группу ТС</h4>
-@Html.DropDownList("VehicleGroup", ViewBag.VehicleGroups as SelectList, new { id = "vehicleGroup" })
-<h4>Выберите ТС</h4>
-@Html.DropDownList("Vehicle", ViewBag.Vehicles as SelectList, new { id = "vehicle", multiple = "multiple" })
-<br />*@
-@*<select id="routeCoordinate" name="RouteCoordinate" multiple=""></select>*@
+</div>
 
 @section scripts{
     <script type="text/javascript">
@@ -121,9 +127,25 @@
             var id = $(this).val();
             alert(id);
         });
-        function getRoute() {
+        function checkList() {
             var veh = document.getElementById("vehicle");
             var id = veh.options[veh.selectedIndex].value;
+            alert(id);
+            $.ajax({
+                type: 'GET',
+                @*url: '@Url.Action("GetItems", "Server")/' + id,*@
+                url: '@Url.Action("GetFlight", "Server")/'+id,
+                success: function(data) {
+                    // заменяем содержимое присланным частичным представлением
+                    $('#reportTable').replaceWith(data);
+                }
+            });
+        }
+        function showFlightReport() {
+            //alert("E");
+            var veh = document.getElementById("vehicle");
+            var id = veh.options[veh.selectedIndex].value;
+            alert(id);
             var routeCoordinates = [];
             $.ajax({
                 type: 'GET',
@@ -147,19 +169,6 @@
                     buildRoute(routeCoordinates);
                 }
             });
-            //routeCoordinates = [
-            //    {lat: 60.772, lng: 30.214},
-            //    {lat: 61.291, lng: 37.821},
-            //    {lat: 62.142, lng: 38.431},
-            //    {lat: 63.467, lng: 33.027}
-            //];
-            //routeCoordinates.push({ lat: 66, lng: 33});
-
-
-
         }
     </script>
 }
-@*<button onclick="getRoute();" id="reportView" class="btn btn-default">
-    Показать
-</button>*@

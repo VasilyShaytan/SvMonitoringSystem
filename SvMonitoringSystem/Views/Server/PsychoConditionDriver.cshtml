@@ -1,0 +1,284 @@
+﻿и@{
+    ViewData["Title"] = "Advanced Diagnostic Parameter Page";
+    Layout = "_Default";
+}
+
+<h3 style="position:absolute; top:60px; left:150px;">Параметры мониторинга психофизического состояния водителя</h3>
+<div style="position:absolute; top:120px; left:20px; width:500px; height:350px;  outline: 1px solid #000;">
+    <div style="margin: 5%;">
+        @*<h4>&nbsp; Выберите Группу ТС:</h4>
+        @Html.DropDownList("VehicleGroup", ViewBag.VehicleGroups as SelectList, new { id = "vehicleGroup", @class = "form-control" })
+        <br />
+        <h4>&nbsp; Выберите ТС:</h4>
+        @Html.DropDownList("Vehicle", ViewBag.Vehicles as SelectList, new { id = "vehicle", multiple = "multiple", @class = "form-control" })
+        <br />*@
+        @*<div class="form-group row">
+                <label for="example-datetime-local-input" class="col-2 col-form-label">От</label>
+                <div class="col-10">
+                    <input class="form-control" type="datetime-local" value="2017-08-19T13:45:00" id="example-datetime-local-input">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="example-datetime-local-input" class="col-2 col-form-label">До</label>
+                <div class="col-10">
+                    <input class="form-control" type="datetime-local" value="2017-08-19T13:45:00" id="example-datetime-local-input">
+                </div>
+            </div>*@
+        <br />
+        <button onclick="showFlightReport();" id="reportFlightView" class="btn btn-default">
+            Показать отчет
+        </button>
+    </div>
+</div>
+<div style="position:absolute; top:500px; left:20px; width:700px; height:610px;  outline: 1px solid #000;">
+    <div style="margin: 5%;">
+        <h4>Водитель: Иванов Михаил Семенович (id:12)</h4>
+        <table id="reportTableFlight" class="table" name="ReportTableFuel" width="400">
+            <thead>
+                <tr>
+                    <th>
+                        <em>Имя параметра</em>
+                    </th>
+                    <th>
+                        <em>Описание параметра</em>
+                    </th>
+                    <th>
+                        <em>Дата и время</em>
+                    </th>
+                    <th>
+                        <em>Референсная норма</em>
+                    </th>
+                    <th>
+                        <em>Среднее значение</em>
+                    </th>
+                    <th>
+                        <em>Источник информации</em>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>
+                        Sgr (КГР)
+                    </th>
+                    <th>
+                        Кожно-гальваническая реакция
+                    </th>
+                    <th>
+                        20.08.2017 13:20
+                    </th>
+                    <th>
+                        0
+                    </th>
+                    <th>
+                        0
+                    </th>
+                    <th>
+                        Датчик КГР
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        Hr (ЧСС)
+                    </th>
+                    <th>
+                        Частота сердечных сокращений
+                    </th>
+                    <th>
+                        20.08.2017 13:20
+                    </th>
+                    <th>
+                        60 - 80 уд./мин
+                    </th>
+                    <th>
+                        67 уд./мин
+                    </th>
+                    <th>
+                        Датчик ЧСС
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        Alfa1 (Альфа1)
+                    </th>
+                    <th>
+                        Значение альфа-ритма
+                    </th>
+                    <th>
+                        20.08.2017 13:20
+                    </th>
+                    <th>
+                        8 - 10 Гц
+                    </th>
+                    <th>
+                        8,5 Гц
+                    </th>
+                    <th>
+                        Электрод на голове
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        Elc	(КВ)
+                    </th>
+                    <th>
+                        Контроль век
+                    </th>
+                    <th>
+                        20.08.2017 13:20
+                    </th>
+                    <th>
+                        2 - 3 морг./мин
+                    </th>
+                    <th>
+                        2,2 морг./мин
+                    </th>
+                    <th>
+                        Видеокамера
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        Нрf	(ПГФ)
+                    </th>
+                    <th>
+                        Положение головы (фронтальное)
+                    </th>
+                    <th>
+                        20.08.2017 13:20
+                    </th>
+                    <th>
+                        &plusmn;45&deg;
+                    </th>
+                    <th>
+                        16&deg;
+                    </th>
+                    <th>
+                        Видеокамера
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        Нрs	(ПГБ)
+                    </th>
+                    <th>
+                        Положение головы (боковое)
+                    </th>
+                    <th>
+                        20.08.2017 13:20
+                    </th>
+                    <th>
+                        &plusmn;45&deg;
+                    </th>
+                    <th>
+                        35&deg;
+                    </th>
+                    <th>
+                        Видеокамера
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        Crm	(КПР)
+                    </th>
+                    <th>
+                        Контроль пересечения разметки
+                    </th>
+                    <th>
+                        20.08.2017 13:20
+                    </th>
+                    <th>
+                        &plusmn;45&deg;
+                    </th>
+                    <th>
+                        11&deg;
+                    </th>
+                    <th>
+                        Видеокамера
+                    </th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        a
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(function() {
+            $('#vehicleGroup').change(function () {
+                // получаем выбранный id
+                var id = $(this).val();
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("GetItems", "Server")/' + id,
+                    success: function(data) {
+                        // заменяем содержимое присланным частичным представлением
+                        //$('#vehicle').replaceWith(data);
+                        $('#vehicle').empty();
+
+                        $.each(data, function (i, item) {
+                            $('#vehicle').append($('<option>', {
+                                value: item.vehicleId,
+                                text: item.mark + ' ' + item.modelType
+                            }));
+                        });
+                    }
+                });
+            });
+        });
+
+    </script>
+    <script>
+        $('#vehicle').select(function () {
+            var id = $(this).val();
+            alert(id);
+        });
+        function checkList() {
+            var veh = document.getElementById("vehicle");
+            var id = veh.options[veh.selectedIndex].value;
+            alert(id);
+            $.ajax({
+                type: 'GET',
+                @*url: '@Url.Action("GetItems", "Server")/' + id,*@
+                url: '@Url.Action("GetFlight", "Server")/'+id,
+                success: function(data) {
+                    // заменяем содержимое присланным частичным представлением
+                    $('#reportTable').replaceWith(data);
+                }
+            });
+        }
+        function showFlightReport() {
+            //alert("E");
+            var veh = document.getElementById("vehicle");
+            var id = veh.options[veh.selectedIndex].value;
+            alert(id);
+            var routeCoordinates = [];
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetCoordinates", "Server")/' + id,
+                success: function(data) {
+                    // заменяем содержимое присланным частичным представлением
+                    //$('#routeCoordinate').replaceWith(data);
+                    $('#routeCoordinate').empty();
+
+                    $.each(data, function (i, item) {
+                        $('#routeCoordinate').append($('<option>', {
+                            value: item.routeId,
+                            text: item.coordinateLatitude
+                        }));
+                        lat = item.coordinateLatitude;
+                        lon = item.coordinateLongitude;
+                        //alert(item.routeId);
+                        showVehicleOnMap(lat, lon);
+                        routeCoordinates.push({ lat: item.coordinateLatitude, lng: item.coordinateLongitude });
+                    });
+                    buildRoute(routeCoordinates);
+                }
+            });
+        }
+    </script>
+}
+

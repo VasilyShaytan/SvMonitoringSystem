@@ -1,0 +1,76 @@
+﻿@{
+    ViewData["Title"] = "Geozone Report Page";
+    Layout = "_Server";
+}
+
+<button onclick="showGeozoneReport();" id="reportGeozoneView" class="btn btn-default">
+    Показать отчет
+</button>
+
+@section scripts {
+<script>
+    function showGeozoneReport() {
+        var routeCoordinates = [];
+        var lat1 = 57.5;
+        var lon1 = 29.5;
+        var lat2 = 59.4;
+        var lon2 = 29.5;
+        var lat3 = 59.4;
+        var lon3 = 32;
+        var lat4 = 57.5;
+        var lon4 = 32;
+        //alert(item.routeId);
+        //showVehicleOnMap(lat, lon);
+        routeCoordinates.push({ lat: lat1, lng: lon1 });
+        routeCoordinates.push({ lat: lat2, lng: lon2 });
+        routeCoordinates.push({ lat: lat3, lng: lon3 });
+        routeCoordinates.push({ lat: lat4, lng: lon4 });
+        routeCoordinates.push({ lat: lat1, lng: lon1 });
+        buildRoute(routeCoordinates);
+        var routeCoordinates2 = [];
+        var lat11 = 57.6;
+        var lon11 = 29.7;
+        var lat21 = 59.3;
+        var lon21 = 29.7;
+        var lat31 = 59.3;
+        var lon31 = 31.8;
+        var lat41 = 57.6;
+        var lon41 = 31.8;
+        //alert(item.routeId);
+        //showVehicleOnMap(lat, lon);
+        routeCoordinates2.push({ lat: lat11, lng: lon11 });
+        routeCoordinates2.push({ lat: lat21, lng: lon21 });
+        routeCoordinates2.push({ lat: lat31, lng: lon31 });
+        routeCoordinates2.push({ lat: lat41, lng: lon41 });
+        routeCoordinates2.push({ lat: lat11, lng: lon11 });
+        buildRoute(routeCoordinates2);
+            @*//alert("E");
+            var veh = document.getElementById("vehicle");
+            var id = veh.options[veh.selectedIndex].value;
+            alert(id);
+            var routeCoordinates = [];
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetCoordinates", "Server")/' + id,
+                success: function(data) {
+                    // заменяем содержимое присланным частичным представлением
+                    //$('#routeCoordinate').replaceWith(data);
+                    $('#routeCoordinate').empty();
+
+                    $.each(data, function (i, item) {
+                        $('#routeCoordinate').append($('<option>', {
+                            value: item.routeId,
+                            text: item.coordinateLatitude
+                        }));
+                        lat = item.coordinateLatitude;
+                        lon = item.coordinateLongitude;
+                        //alert(item.routeId);
+                        showVehicleOnMap(lat, lon);
+                        routeCoordinates.push({ lat: item.coordinateLatitude, lng: item.coordinateLongitude });
+                    });
+                    buildRoute(routeCoordinates);
+                }
+            });*@
+        }
+</script>
+}

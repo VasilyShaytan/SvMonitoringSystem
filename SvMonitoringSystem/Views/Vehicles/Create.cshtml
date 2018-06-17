@@ -2,40 +2,35 @@
 
 @{
     ViewData["Title"] = "Create";
+    Layout = "_Default";
 }
 
-<h2>Create</h2>
 
-<h4>Vehicle</h4>
+<h4>Создать ТС</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Mark" class="control-label"></label>
+                <label asp-for="Mark" class="control-label">Марка</label>
                 <input asp-for="Mark" class="form-control" />
                 <span asp-validation-for="Mark" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ModelType" class="control-label"></label>
+                <label asp-for="ModelType" class="control-label">Модель</label>
                 <input asp-for="ModelType" class="form-control" />
                 <span asp-validation-for="ModelType" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="СarryingСapacity" class="control-label"></label>
-                <input asp-for="СarryingСapacity" class="form-control" />
-                <span asp-validation-for="СarryingСapacity" class="text-danger"></span>
+                <label asp-for="RegistrationNumber" class="control-label">Регистрационный номер</label>
+                <input asp-for="RegistrationNumber" class="form-control" />
+                <span asp-validation-for="RegistrationNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="YearIssue" class="control-label"></label>
+                <label asp-for="YearIssue" class="control-label">Год выпуска</label>
                 <input asp-for="YearIssue" class="form-control" />
                 <span asp-validation-for="YearIssue" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UsefulVolume" class="control-label"></label>
-                <input asp-for="UsefulVolume" class="form-control" />
-                <span asp-validation-for="UsefulVolume" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="VehicleType" class="control-label"></label>
@@ -43,19 +38,14 @@
                 <span asp-validation-for="VehicleType" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="OverallDimensions" class="control-label"></label>
-                <input asp-for="OverallDimensions" class="form-control" />
-                <span asp-validation-for="OverallDimensions" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Создать" class="btn btn-default" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Назад</a>
 </div>
 
 @section Scripts {

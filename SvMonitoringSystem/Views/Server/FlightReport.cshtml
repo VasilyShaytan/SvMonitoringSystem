@@ -4,14 +4,112 @@
     Layout = "_Server";
 }
 
-<h4>Выберите Группу ТС</h4>
-@Html.DropDownList("VehicleGroup", ViewBag.VehicleGroups as SelectList, new { id = "vehicleGroup" })
-<h4>Выберите ТС</h4>
-@Html.DropDownList("Vehicle", ViewBag.Vehicles as SelectList, new { id = "vehicle", multiple = "multiple" })
-<br />
-<div>
-    <table id="reportTable" name="ReportTable" width="400"></table>
+<h3 style="position:absolute; top:60px; left:150px;">Отчет по рейсу</h3>
+<div style="position:absolute; top:120px; left:20px; width:500px; height:500px;  outline: 1px solid #000;">
+    <div style="margin: 5%;">
+        <h4>&nbsp; Выберите Группу ТС:</h4>
+        @Html.DropDownList("VehicleGroup", ViewBag.VehicleGroups as SelectList, new { id = "vehicleGroup", @class = "form-control" })
+        <br />
+        <h4>&nbsp; Выберите ТС:</h4>
+        @Html.DropDownList("Vehicle", ViewBag.Vehicles as SelectList, new { id = "vehicle", multiple = "multiple", @class = "form-control" })
+        <br />
+        <div class="form-group row">
+            <label for="example-datetime-local-input" class="col-2 col-form-label">От</label>
+            <div class="col-10">
+                <input class="form-control" type="datetime-local" value="2017-08-19T13:45:00" id="example-datetime-local-input">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="example-datetime-local-input" class="col-2 col-form-label">До</label>
+            <div class="col-10">
+                <input class="form-control" type="datetime-local" value="2017-08-19T13:45:00" id="example-datetime-local-input">
+            </div>
+        </div>
+        <br />
+        <button onclick="showFlightReport();" id="reportFlightView" class="btn btn-default">
+            Показать отчет
+        </button>
+    </div>
 </div>
+<div style="position:absolute; top:650px; left:20px; width:500px; height:300px;  outline: 1px solid #000;">
+    <div style="margin: 5%;">
+
+        <table id="reportTableFlight" class="table" name="ReportTableFuel" width="400">
+            <thead>
+                <tr>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.SpnNameRu)*@
+                        <em>Имя параметра</em>
+                    </th>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.BasicParameterValue)*@
+                        <em>Значение</em>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>
+                        Период движения
+                    </th>
+                    <th>
+                        19.08.2017 13:45 - <br />21.08.2017 13:45
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        Пробег общий (км)
+                    </th>
+                    <th>
+                        2293,6 км
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        Средняя скорость движения (км/ч)
+                    </th>
+                    <th>
+                        31,86
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        Общий расход дизеля (л)
+                    </th>
+                    <th>
+                        378,5
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        Общий расход газа (л)
+                    </th>
+                    <th>
+                        84,1
+                    </th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+@*<h4>Выберите Группу ТС</h4>
+    @Html.DropDownList("VehicleGroup", ViewBag.VehicleGroups as SelectList, new { id = "vehicleGroup" })
+    <h4>Выберите ТС</h4>
+    @Html.DropDownList("Vehicle", ViewBag.Vehicles as SelectList, new { id = "vehicle", multiple = "multiple" })
+    <br />
+    <div>
+        <table id="reportTable" name="ReportTable" width="400"></table>
+    </div>*@
+
+
+@*<button onclick="checkList();" id="reportView" class="btn btn-default">
+        Показать
+    </button>*@
+
+
 
 @section scripts{
     <script type="text/javascript">
@@ -24,7 +122,15 @@
                     url: '@Url.Action("GetItems", "Server")/' + id,
                     success: function(data) {
                         // заменяем содержимое присланным частичным представлением
-                        $('#vehicle').replaceWith(data);
+                        //$('#vehicle').replaceWith(data);
+                        $('#vehicle').empty();
+
+                        $.each(data, function (i, item) {
+                            $('#vehicle').append($('<option>', {
+                                value: item.vehicleId,
+                                text: item.mark + ' ' + item.modelType
+                            }));
+                        });
                     }
                 });
             });
@@ -50,8 +156,34 @@
                 }
             });
         }
+        function showFlightReport() {
+            //alert("E");
+            var veh = document.getElementById("vehicle");
+            var id = veh.options[veh.selectedIndex].value;
+            alert(id);
+            var routeCoordinates = [];
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetCoordinates", "Server")/' + id,
+                success: function(data) {
+                    // заменяем содержимое присланным частичным представлением
+                    //$('#routeCoordinate').replaceWith(data);
+                    $('#routeCoordinate').empty();
+
+                    $.each(data, function (i, item) {
+                        $('#routeCoordinate').append($('<option>', {
+                            value: item.routeId,
+                            text: item.coordinateLatitude
+                        }));
+                        lat = item.coordinateLatitude;
+                        lon = item.coordinateLongitude;
+                        //alert(item.routeId);
+                        showVehicleOnMap(lat, lon);
+                        routeCoordinates.push({ lat: item.coordinateLatitude, lng: item.coordinateLongitude });
+                    });
+                    buildRoute(routeCoordinates);
+                }
+            });
+        }
     </script>
 }
-<button onclick="checkList();" id="reportView" class="btn btn-default">
-    Показать
-</button>

@@ -4,14 +4,78 @@
     Layout = "_Server";
 }
 
-<h3>Выберите Группу ТС</h3>
+@*<h3>Выберите Группу ТС</h3>
 @Html.DropDownList("VehicleGroup", ViewBag.VehicleGroups as SelectList, new { id = "vehicleGroup" })
 <h3>Выберите ТС</h3>
 @Html.DropDownList("Vehicle", ViewBag.Vehicles as SelectList, new { id = "vehicle", multiple = "multiple" })
 <div></div>
 <br />
-<select id="routeCoordinate" name="RouteCoordinate" multiple=""></select>
-
+<select id="routeCoordinate" name="RouteCoordinate" multiple=""></select>*@
+<h3 style="position:absolute; top:60px; left:150px;">ТС / Группы ТС</h3>
+<div style="position:absolute; top:120px; left:20px; width:500px; height:350px;  outline: 1px solid #000;">
+    <div style="margin: 5%;">
+        <h4>&nbsp; Выберите Группу ТС:</h4>
+        @Html.DropDownList("VehicleGroup", ViewBag.VehicleGroups as SelectList, new { id = "vehicleGroup", @class = "form-control" })
+        <br />
+        <h4>&nbsp; Выберите ТС:</h4>
+        @Html.DropDownList("Vehicle", ViewBag.Vehicles as SelectList, new { id = "vehicle", multiple = "multiple", @class = "form-control" })
+        <br />
+        <br />
+        <button onclick="showVehicle();" id="reportView" class="btn btn-default">
+            Показать ТС
+        </button>
+    </div>
+</div>
+<div style="position:absolute; top:500px; left:20px; width:500px; height:300px;  outline: 1px solid #000;">
+    <div style="margin: 5%;">
+        <table id="vehicleTable" class="table" name="VehiceTable" width="400">
+            <thead>
+                <tr>
+                    <th>
+                        <em>Имя параметра</em>
+                    </th>
+                    <th>
+                        <em>Значение</em>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>
+                        Имя ТС
+                    </th>
+                    <th>
+                        VOLVO FH400
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        Текущая скорость (км/ч)
+                    </th>
+                    <th>
+                        69,33
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        Объем топлива в баке (л)
+                    </th>
+                    <th>
+                        46,1
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        Обороты двигателя (об/мин)
+                    </th>
+                    <th>
+                        3100
+                    </th>
+                </tr>              
+            </tbody>
+        </table>
+    </div>
+</div>
 
 @section scripts{
     <script type="text/javascript">
@@ -25,44 +89,68 @@
                     url: '@Url.Action("GetItems", "Server")/' + id,
                     success: function(data) {
                         // заменяем содержимое присланным частичным представлением
-                        $('#vehicle').replaceWith(data);
+                        //$('#vehicle').replaceWith(data);
+                        $('#vehicle').empty();
+
+                        $.each(data, function (i, item) {
+                            $('#vehicle').append($('<option>', {
+                                value: item.vehicleId,
+                                text: item.mark + ' ' + item.modelType
+                            }));
+                        });
                     }
                 });
             });
         });
         $('#vehicle').change(function () {
             var id = $(this).val();
-            //alert(id);
+            alert(id);
         });
     </script>
-}
 
-<script>
+
+    <script>
     $('#vehicle').select(function () {
         var id = $(this).val();
         alert(id);
     });
-    function ww() {
+    function showVehicle() {
         var veh = document.getElementById("vehicle");
         var id = veh.options[veh.selectedIndex].value;
+        var lat;
+        var lon;
         alert(id);
         $.ajax({
             type: 'GET',
             url: '@Url.Action("GetCoordinates", "Server")/' + id,
             success: function(data) {
-                // заменяем содержимое присланным частичным представлением
-                var msg = "@(ViewBag.Coordinate.CoordinateLatitude)";
-                alert(msg);
-                $('#routeCoordinate').replaceWith(data);
+                //$('#routeCoordinate').replaceWith(data);
+                $('#routeCoordinate').empty();
+
+                $.each(data, function (i, item) {
+                    $('#routeCoordinate').append($('<option>', {
+                        value: item.routeId,
+                        text: item.coordinateLatitude
+                    }));
+                    lat = item.coordinateLatitude;
+                    lon = item.coordinateLongitude;
+                });
+                showVehicleOnMap(lat, lon);
             }
         });
-        
+
 
     }
-</script>
+    </script>
+}
 
-<button onclick="ww();" id="reportView" class="btn btn-default">
+@*<button onclick="ww();" id="reportView" class="btn btn-default">
     Показать
-</button>
+</button>*@
 
-
+@*<div class="ui-layout-center" id="inner">
+        <div class="ui-layout-center">Inner Center</div>
+        <div class="ui-layout-south">Inner South</div>
+    </div>
+    <div class="ui-layout-north">North</div>
+    <div class="ui-layout-west">West</div>*@

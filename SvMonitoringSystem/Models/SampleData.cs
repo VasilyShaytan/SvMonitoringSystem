@@ -28,8 +28,8 @@ namespace SvMonitoringSystem.Models
             if (!context.Vehicles.Any())
             {
                 context.Vehicles.AddRange(
-                    new Vehicle { Mark = "BMW", ModelType = "E540", СarryingСapacity = 2000, YearIssue = 1998, UsefulVolume = 430, VehicleType = "ГР", OverallDimensions = "20x30x40", VehicleGroupId = 1},
-                    new Vehicle { Mark = "Mersedes", ModelType = "S230", СarryingСapacity = 4000, YearIssue = 1996, UsefulVolume = 930, VehicleType = "ГР", OverallDimensions = "50x70x60", VehicleGroupId = 2 }
+                    new Vehicle { Mark = "BMW", ModelType = "E540", YearIssue = 1998, VehicleType = "ГР", VehicleGroupId = 1},
+                    new Vehicle { Mark = "Mersedes", ModelType = "S230", YearIssue = 1996, VehicleType = "ГР", VehicleGroupId = 2 }
 
                 );
                 context.SaveChanges();
@@ -107,6 +107,14 @@ namespace SvMonitoringSystem.Models
                 );
                 context.SaveChanges();
             }
+            //if (!context.ExtendedParameters.Any())
+            //{
+            //    context.ExtendedParameters.AddRange(
+            //        new ExtendedParameter { UserLogin = "Vasiliy", UserPassword = "11112222", UserName = "Василий", UserSurname = "Шайтан", UserPhone = "7911", RoleId = 1 },
+            //    );
+            //    context.SaveChanges();
+            //}
+
         }
     }
 }

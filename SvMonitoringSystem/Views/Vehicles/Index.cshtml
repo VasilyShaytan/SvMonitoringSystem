@@ -2,36 +2,31 @@
 
 @{
     ViewData["Title"] = "Index";
+    Layout = "_Default";
 }
 
-<h2>Index</h2>
+<h2>Информация о ТС</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Создать новое ТС</a>
 </p>
-<table class="table">
+<table class="table table-striped table-bordered table-hover ">
     <thead>
         <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Mark)
+                    Марка
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.ModelType)
+                    Модель
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.СarryingСapacity)
+                    Регистрационный номер
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.YearIssue)
+                    Год выпуска
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.UsefulVolume)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.VehicleType)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.OverallDimensions)
+                    Тип ТС
                 </th>
             <th></th>
         </tr>
@@ -46,24 +41,18 @@
                 @Html.DisplayFor(modelItem => item.ModelType)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.СarryingСapacity)
+                @Html.DisplayFor(modelItem => item.RegistrationNumber)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.YearIssue)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UsefulVolume)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.VehicleType)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.OverallDimensions)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.VehicleId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.VehicleId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.VehicleId">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.VehicleId">Редактирование</a> |
+                <a asp-action="Details" asp-route-id="@item.VehicleId">Детали</a> |
+                <a asp-action="Delete" asp-route-id="@item.VehicleId">Удаление</a>
             </td>
         </tr>
 }

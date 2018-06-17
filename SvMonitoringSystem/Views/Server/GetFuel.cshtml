@@ -1,0 +1,33 @@
+﻿@model IEnumerable<SvMonitoringSystem.ViewModels.Parameter2>
+
+
+<table id="reportTableFuel" name="ReportTableFuel" width="400" border="1">
+    <thead>
+        <tr>
+            <th>
+                @*@Html.DisplayNameFor(model => model.SpnNameRu)*@
+                Имя параметра
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.BasicParameterValue)*@
+                Значение
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.SpnNameRu)*@
+                    @item.SpnNameRu;
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.BasicParameterValue)*@
+                    @item.BasicParameterValue;
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>

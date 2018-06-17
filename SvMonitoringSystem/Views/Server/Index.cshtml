@@ -3,5 +3,42 @@
     Layout = "_Server";
 }
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
 
-QQQ
+<div style="position:absolute; top:60px; left:10px; width:500px; height:370px; outline: 2px solid #000;">
+    <canvas id="speedChart" width="600" height="400"></canvas>
+    <script>
+        var speedCanvas = document.getElementById("speedChart");
+
+        Chart.defaults.global.defaultFontFamily = "Lato";
+        Chart.defaults.global.defaultFontSize = 18;
+
+        var speedData = {
+            labels: ["0км", "61км", "128км", "212км", "264км", "320км", "391км", "462км", "525км", "602км", "659км", "728км","796км"],
+            datasets: [{
+                label: "Кол-во топлива в баке (л)",
+                data: [250, 232, 213, 189, 170, 151, 123, 101, 82, 60, 250, 226, 204],
+            }]
+        };
+
+        var chartOptions = {
+            legend: {
+                display: true,
+                position: 'top',
+                labels: {
+                    boxWidth: 80,
+                    fontColor: 'black'
+                }
+            }
+        };
+
+        var lineChart = new Chart(speedCanvas, {
+            type: 'line',
+            data: speedData,
+            options: chartOptions
+        });
+    </script>
+</div>

@@ -16,6 +16,7 @@ namespace SvMonitoringSystem.Models
         public DbSet<User> Users { get; set; }
         public DbSet<VehicleGroup> VehicleGroups { get; set; }
         public DbSet<VehicleInGroup> VehicleInGroups { get; set; }
+        //public DbSet<ExtendedParameter> ExtendedParameters { get; set; }
 
         public MonitoringContext(DbContextOptions<MonitoringContext> options) : base(options)
         {

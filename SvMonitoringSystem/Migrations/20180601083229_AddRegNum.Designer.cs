@@ -11,9 +11,10 @@ using System;
 namespace SvMonitoringSystem.Migrations
 {
     [DbContext(typeof(MonitoringContext))]
-    partial class MonitoringContextModelSnapshot : ModelSnapshot
+    [Migration("20180601083229_AddRegNum")]
+    partial class AddRegNum
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -131,13 +132,19 @@ namespace SvMonitoringSystem.Migrations
 
                     b.Property<string>("ModelType");
 
+                    b.Property<string>("OverallDimensions");
+
                     b.Property<string>("RegistrationNumber");
+
+                    b.Property<int>("UsefulVolume");
 
                     b.Property<int?>("VehicleGroupId");
 
                     b.Property<string>("VehicleType");
 
                     b.Property<int>("YearIssue");
+
+                    b.Property<int>("СarryingСapacity");
 
                     b.HasKey("VehicleId");
 
